@@ -134,7 +134,7 @@ public class Mickey {
 	
 	/* Key setup: simply save the key in ctx for use during IV setup */
 
-	public void ECRYPT_keysetup(Ctx ctx,int[] key,/* Key size in bits. */ long keysiz,/* IV size in bits. */ long ivsize)                 
+	public void ECRYPT_keysetup(Ctx ctx,byte[] key,/* Key size in bits. */ long keysiz,/* IV size in bits. */ long ivsize)                 
 	{
 	    int i; /* Indexing variable */	       
 
@@ -157,7 +157,7 @@ public class Mickey {
 
 	/* This routine implements key loading according to the MICKEY-128 specification */
 
-	public void ECRYPT_ivsetup(Ctx ctx,int[] iv)
+	public void ECRYPT_ivsetup(Ctx ctx,byte[] iv)
 	{
 	    int i;
 	        /* Counting/indexing variable */
