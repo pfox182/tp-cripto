@@ -4,11 +4,15 @@ public class Test {
 	public static void main(String[] args) {
 		Mickey mickey = new Mickey();
 		
-		String key = "hola";
-		byte[] iv = new byte[160];
+		byte[] key = new byte[80];
+		byte[] iv = new byte[80];
 		
-		String input = "Texto claro";
+		byte[] input = new byte[160];
 		byte[] output = new byte[512];//Es un tamaño grande para una prueba, solo se va a guardar valores
+		
+		//Inicializaciones
+		key = "clave segura".getBytes();
+		input = "Texto claro".getBytes();
 		
 		/*Pasos a seguir
 		 * 
@@ -25,11 +29,11 @@ public class Test {
 		Ctx ctx = new Ctx();//Inicializa to oen 0
 		
 		//Paso 2 y 3
-		mickey.ECRYPT_ivsetup(ctx, iv);
-		mickey.ECRYPT_keysetup(ctx, key.getBytes(), key.length(), iv.length);;		
+		mickey.ECRYPT_keysetup(ctx, key, key.length, iv.length);
+		mickey.ECRYPT_ivsetup(ctx, iv);		
 		
 		//Encriptar /* 0 = encrypt; 1 = decrypt; */
-		mickey.ECRYPT_process_bytes(0, ctx, input.getBytes(), output, input.length());
+		mickey.ECRYPT_process_bytes(0, ctx, input, output, input.length);
 		
 		
 
