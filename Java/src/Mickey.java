@@ -102,10 +102,14 @@ public class Mickey {
 	        if (control_bit_s > 1)
 	        {
 	            for (i=0; i<160; i++)
-	                ctx.S[i] = s_hat[i] ^ FB1[i];
+	            {
+	            	ctx.S[i] = s_hat[i] ^ FB1[i];
+	            }
 	        }else{
 	            for (i=0; i<160; i++)
-	                ctx.S[i] = s_hat[i] ^ FB0[i];
+	            {
+	            	ctx.S[i] = s_hat[i] ^ FB0[i];
+	            }
 	        }
 	    }
 	}
@@ -134,12 +138,13 @@ public class Mickey {
 	
 	/* Key setup: simply save the key in ctx for use during IV setup */
 
-	public void ECRYPT_keysetup(Ctx ctx,byte[] key,/* Key size in bits. */ long keysiz,/* IV size in bits. */ long ivsize)                 
+	public void ECRYPT_keysetup(Ctx ctx,int[] key,/* Key size in bits. */ long keysiz,/* IV size in bits. */ int ivsize)                 
 	{
 	    int i; /* Indexing variable */	       
 
 	    /* Store the key in the algorithm context */
-	    for (i = 0; i<16; i++)
+	    //for (i = 0; i<16; i++) //Original
+	    for (i = 0; i<key.length; i++)
 	    {
 	    	ctx.key[i] = key[i];
 	    }
@@ -157,7 +162,7 @@ public class Mickey {
 
 	/* This routine implements key loading according to the MICKEY-128 specification */
 
-	public void ECRYPT_ivsetup(Ctx ctx,byte[] iv)
+	public void ECRYPT_ivsetup(Ctx ctx,int[] iv)
 	{
 	    int i;
 	        /* Counting/indexing variable */
@@ -195,7 +200,7 @@ public class Mickey {
 	
 	/* Stream cipher a block of data */
 
-	public void ECRYPT_process_bytes(int action,/* 0 = encrypt; 1 = decrypt; */Ctx ctx,byte[] input, byte[] output,int msglen/* length in bytes */){
+	public void ECRYPT_process_bytes(int action,/* 0 = encrypt; 1 = decrypt; */Ctx ctx,int[] input, int[] output,int msglen/* length in bytes */){
 		int i, j;
 	        /* Counting variables */
 
@@ -205,14 +210,15 @@ public class Mickey {
 
 	        for (j=0; j<8; j++)
 	        {
-	        	output [i] ^= CLOCK_KG (ctx, 0, 0) << (7-j);
+	        	int aux = (CLOCK_KG(ctx, 0, 0) << (7-j));
+	        	output[i] = output[i] ^ aux;
 	        }
 	    }
 	}
 	
 	/* Generate keystream data */
 
-	public void ECRYPT_keystream_bytes(Ctx ctx,int[] keystream,int length) /* Length of keystream in bytes. */
+	public int[] ECRYPT_keystream_bytes(Ctx ctx,int[] keystream,int length) /* Length of keystream in bytes. */
 	{
 	    int i, j;
 	        /* Counting variables */
@@ -223,8 +229,11 @@ public class Mickey {
 
 	        for (j=0; j<8; j++)
 	        {
-	        	keystream[i] ^= CLOCK_KG (ctx, 0, 0) << (7-j);
+	        	int aux = CLOCK_KG(ctx, 0, 0) << (7-j);
+	        	keystream[i] = keystream[i] ^ aux;
 	        }
 	    }
+	    
+	    return keystream;
 	}
 }

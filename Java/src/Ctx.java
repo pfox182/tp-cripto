@@ -3,7 +3,7 @@ public class Ctx {
 	int[] R = new int[160];
 	int[] S = new int[160];
 	int[] key = new int[160];
-	long ivsize;
+	int ivsize;
 	
 	public Ctx()
 	{
